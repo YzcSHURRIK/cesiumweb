@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>管理后台</title>
+    <link rel="stylesheet" href="/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/admin_main_style.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="menu-wrap">
+    <div class="menu dowebok">
+        <ul>
+            <li>
+                <a href="/admin/main">
+                    <i class="fa fa-home fa-lg"></i>
+                    <span class="nav-text">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/landmarks">
+                    <i class="fa fa-align-left fa-lg"></i>
+                    <span class="nav-text">地标管理</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="main">
+    <div class="main_title">
+        <div class="page-header">
+            <h1>地标管理</h1>
+        </div>
+        <!--    模态框-->
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            添加地标
+        </button>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            添加地标
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--                     表单-->
+                        <form class="form-horizontal" role="form" id="landmarkForm" method="post"
+                              action="/admin/addLandmark">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">地标名字</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">经度</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="longitude"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">纬度</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="latitude"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">高度</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="altitude"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">类型</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="type"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">相关信息</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="information"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" style="width: 100px">图片</label>
+                                <div class="col-sm-10">
+                                    <input type="file" class="form-control" id="photoFile"
+                                           placeholder="">
+                                    <input type="hidden" name="picture" id="picture">
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="formSubmit">
+                            提交
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br>
+    <div class="main_content">
+        <table class="table table-hover">
+            <tr>
+                <th>id</th>
+                <th>地标名</th>
+                <th>用户id</th>
+                <th>经度</th>
+                <th>维度</th>
+                <th>高度</th>
+                <th>创建时间</th>
+                <th>类型</th>
+                <th>相关信息</th>
+                <th>图片</th>
+                <th>是否审核</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="landmark:${landmarks}">
+                <td th:text="${landmark.id}"></td>
+                <td th:text="${landmark.name}"></td>
+                <td th:text="${landmark.userId}"></td>
+                <td th:text="${landmark.longitude}"></td>
+                <td th:text="${landmark.latitude}"></td>
+                <td th:text="${landmark.altitude}"></td>
+                <td th:text="${landmark.time}"></td>
+                <td th:text="${landmark.type}"></td>
+                <td th:text="${landmark.information}"></td>
+                <td><img class="img-thumbnail" th:src="${landmark.picture}"/></td>
+                <td th:text="${landmark.isChecked}"></td>
+                <td><a class="btn btn-default" th:href="@{/admin/deleteLandmark(id=${landmark.id})}">删除</a>/<a
+                        class="btn btn-default">修改</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $("#formSubmit").click(function () {
+            var formData = new FormData();
+            formData.append('file', document.getElementById('photoFile').files[0]);
+            $.ajax({
+                url:"http://123.57.27.99:4003/upload/image",
+                type:"post",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $("#picture").val(data);
+                    $('#identifier').modal('hide');
+                    $('#landmarkForm').submit();
+                },
+                error:function(data) {
+                    alert("图片上传失败")
+                }
+            });
+
+
+        })
+    })
+</script>
+</html>

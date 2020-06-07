@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<a href="javascript:void(0)" onclick="uploadPhoto()">选择图片</a>
+<input type="file" id="photoFile" style="display: none;" onchange="upload()">
+<script>
+    function uploadPhoto() {
+        $("#photoFile").click();
+    }
+
+    /**
+     * 上传图片
+     */
+    function upload() {
+        if ($("#photoFile").val() == '') {
+            return;
+        }
+        var formData = new FormData();
+        formData.append('file', document.getElementById('photoFile').files[0]);
+        $.ajax({
+            url:"http://123.57.27.99:4003/upload/image",
+            type:"post",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                alert("请访问这个地址:"+data)
+            },
+            error:function(data) {
+                alert("上传失败")
+            }
+        });
+    }
+</script>
+</body>
+</html>

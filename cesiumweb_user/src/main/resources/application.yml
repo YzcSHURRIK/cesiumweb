@@ -1,0 +1,12 @@
+server:
+  port: 4002
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://123.57.27.99:3307/cesium_web?characterEncoding=UTF8
+    username: root
+    password: 123456
+jwt:
+  config:
+    key: shun
+    ttl: 3600000
